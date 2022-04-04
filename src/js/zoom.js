@@ -16,6 +16,7 @@ class Zoom {
 
     this.mouseWheelZoomInit();
     this.keyBoardZoomInit();
+    this.zoom_container.style.transform = "scale(0.2, 0.2)";
 
   }
 
