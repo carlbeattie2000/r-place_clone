@@ -5,7 +5,7 @@ export default {
   input: 'src/js/index.js',
   output: {
     file: 'build/js/index.min.js',
-    format: 'cjs'
+    format: 'iife'
   },
   plugins: [
     scss({

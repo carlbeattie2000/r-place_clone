@@ -9,7 +9,7 @@ class Zoom {
     this.current_zoom = 0.2;
     this.zoom_steps = 0.4;
     this.zoom_container = document.getElementById(zoom_container);
-    
+
   }
 
   init() {
@@ -55,6 +55,7 @@ class Zoom {
   mouseWheelZoomInit() {
 
     this.zoom_container.addEventListener("wheel", (e) => {
+      e.preventDefault();
 
       const zoom = e.deltaY;
 
@@ -91,7 +92,6 @@ class Zoom {
     })
 
   }
-
 }
 
 export default new Zoom({
