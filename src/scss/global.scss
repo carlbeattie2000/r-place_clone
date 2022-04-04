@@ -441,22 +441,19 @@ opacity: 0;
 
 .place-activity-count,
 .place-coordinates {
-  background: rgba(255, 255, 255, .6);
-  border-radius: 4px;
-  bottom: 100%;
-  color: #666666;
+  background-color: #fff;
+  position: fixed;
   font-size: 10px;
-  height: auto;
-  line-height: 12px;
-  padding: 5px;
-  position: absolute;
-  vertical-align: middle;
-  width: auto;
+  box-shadow: 5px 10px 5px 1px #777;
+  border-radius: 20px;
+  width: 10%;
+  text-align: center;
 }
 
 .place-coordinates {
-  left: 0;
-  transform: translate(10px, -10px);
+  left: 50%;
+  top: 10%;
+  transform: translate(-50%, -50%)
 }
 
 .place-activity-count {
