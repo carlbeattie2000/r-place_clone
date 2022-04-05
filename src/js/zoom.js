@@ -98,5 +98,5 @@ class Zoom {
 export default new Zoom({
   min_zoom: config.CANVAS.MIN_ZOOM,
   max_zoom: config.CANVAS.MAX_ZOOM,
-  zoom_container: config.HTML_ELEMENTS_IDS.place_viewer
+  zoom_container: config.HTML_ELEMENTS_IDS.place_viewer,
 })
