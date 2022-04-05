@@ -22,4 +22,8 @@ class Canvas {
   }
 }
 
-export default new Canvas(shared_state.canvas, config.canvas_width, config.canvas_height);
+const main = new Canvas(shared_state.canvas, config.canvas_width, config.canvas_height)
+
+main.init();
+
+export default main

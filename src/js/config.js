@@ -52,4 +52,5 @@ export default {
     13: 70,
     14: 100,
   },
+  env_mode: "static"
 };

@@ -6,7 +6,6 @@ import camera from "./camera";
 import color_selector from "./color_selector";
 import draw from "./draw";
 
-canvas.init();
 zoom.init();
 coordinates.init();
 camera.init();

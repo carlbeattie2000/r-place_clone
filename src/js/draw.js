@@ -1,18 +1,6 @@
-export function fillRectMethod({ x, y, color }, ctx) {
-  ctx.fillStyle = color;
-  x = Math.floor(x);
-  y = Math.floor(y);
-  ctx.fillRect(x, y, 1, 1);
-}
-
-export function drawLogoExample(pixels, ctx) {
-  for (let pixel of pixels) {
-    fillRectMethod(pixel, ctx);
-  }
-}
-
 import shared_state from "./shared_state";
 import coordinates from "./coordinates";
+import storage from "./storage";
 
 class Draw {
 
@@ -26,6 +14,12 @@ class Draw {
 
     this.drawEvent();
 
+    const loadedData = storage.loadDataFromLocalStorage();
+
+    console.log(loadedData);
+
+    this.drawWholeBoard(loadedData);
+
   }
 
   drawEvent() {
@@ -36,6 +30,8 @@ class Draw {
 
       this.drawRect(x, y, shared_state.selectedColor);
 
+      storage.saveDataToLocalStorage({x, y, color: shared_state.selectedColor});
+
     })
 
   }
@@ -43,6 +39,8 @@ class Draw {
   drawRect(x, y, color) {
 
     const ctx = shared_state.ctx;
+
+    console.log(this.canvas);
     
     y = Math.floor(y);
     x = Math.floor(x);

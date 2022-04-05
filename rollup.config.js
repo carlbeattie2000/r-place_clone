@@ -15,6 +15,6 @@ export default {
       outputStyle: "compressed",
       runtime: require("sass"),
     }),
-    terser()
+    // terser()
   ]
 };
