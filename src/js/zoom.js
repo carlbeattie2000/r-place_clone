@@ -1,102 +1,98 @@
-import config from "./canvas.config";
+import shared_state from "./shared_state";
+import { getLastKeyInObject } from "./utils";
+import config from "./config";
 
-class Zoom {
+class CanvasZoom {
 
-  constructor({min_zoom, max_zoom, zoom_container}) {
+  constructor(canvas, zoom_container, zoomLevels) {
 
-    this.min_zoom = min_zoom;
-    this.max_zoom = max_zoom;
-    this.current_zoom = 0.2;
-    this.zoom_steps = 0.4;
-    this.zoom_container = document.getElementById(zoom_container);
+    this.canvas = canvas;
+    this.zoom_container = zoom_container;
+    this.zoomLevels = zoomLevels
+
+    this.currentZoomLevel = 0;
+    this.maxZoomLevel = getLastKeyInObject(this.zoomLevels);
 
   }
 
   init() {
 
-    this.mouseWheelZoomInit();
-    this.keyBoardZoomInit();
-    this.zoom_container.style.transform = "scale(0.2, 0.2)";
+    this.scrollEvent();
 
   }
 
-  validateZoom(newZoom) {
+  scrollEvent() {
 
-    return newZoom > this.max_zoom ?
-           this.max_zoom : newZoom < this.min_zoom ?
-           this.min_zoom : newZoom
+    this.zoom_container.addEventListener("wheel", (e) => {
+      e.preventDefault();
+
+      if (e.deltaY < 0) {
+        // Zoom in
+        this.zoom("in");
+      }
+      else if (e.deltaY > 0) {
+        // Zoom out
+        this.zoom("out");
+      }
+    })
 
   }
 
   zoom(direction) {
 
-    if (direction == "in") {
+    switch (direction) {
 
-      this.current_zoom = this.validateZoom(this.current_zoom+this.zoom_steps);
-
-      this.zoom_container.style.transform = `scale(${this.current_zoom})`;
-
-      return
-
-    } 
-    else if (direction == "out") {
-
-      this.current_zoom = this.validateZoom(this.current_zoom-this.zoom_steps);
-
-      this.zoom_container.style.transform = `scale(${this.current_zoom})`;
-
-      return
+      case "in":
+        this.currentZoomLevel = this.currentZoomLevel + 1 > this.maxZoomLevel ? this.maxZoomLevel : this.currentZoomLevel + 1;
+        break
+      case "out":
+        this.currentZoomLevel = this.currentZoomLevel - 1 < 0 ? 0 : this.currentZoomLevel - 1;
+        break
+      default:
+        break
 
     }
 
-    return 0
+    this.updateCanvasScale(this.zoomLevels[this.currentZoomLevel]);
+
+    this.updateMaxMinSpan();
+    this.updateCurrentSpan();
 
   }
 
-  mouseWheelZoomInit() {
+  updateCanvasScale(scale) {
 
-    this.zoom_container.addEventListener("wheel", (e) => {
-      e.preventDefault();
+    const scaleText = `scale(${scale})`;
 
-      const zoom = e.deltaY;
-
-      if (zoom < 0) {
-
-        this.zoom("in");
-
-      }
-      else if (zoom > 0) {
-
-        this.zoom("out");
-
-      }
-
-    })
+    this.canvas.style.transform = scaleText;
 
   }
 
-  keyBoardZoomInit() {
-    
-    document.body.addEventListener("keypress", (e) => {
-      
-      if (e.key == "=") {
+  updateMaxMinSpan() {
 
-        this.zoom("in");
+    const newSpanValue = (this.canvas.width * this.zoomLevels[this.currentZoomLevel]) / 2;
 
-      }
-      else if (e.key == "-") {
+    shared_state.setMaxSpanX(newSpanValue);
+    shared_state.setMaxSpanY(newSpanValue);
 
-        this.zoom("out");
-
-      }
-
-    })
+    shared_state.setMinSpanX(-newSpanValue);
+    shared_state.setMinSpanY(-newSpanValue);
 
   }
+
+  updateCurrentSpan() {
+
+    let currentSpanX = shared_state.current_span_x;
+    let currentSpanY = shared_state.current_span_y;
+
+    shared_state.setCurrentSpanX(currentSpanX > shared_state.max_span_x ? shared_state.max_span_x : currentSpanX < shared_state.min_span_x ? 0 : currentSpanX);
+
+    shared_state.setCurrentSpanY(currentSpanY > shared_state.max_span_y ? shared_state.max_span_y : currentSpanY < shared_state.min_span_y ? 0 : currentSpanY);
+
+    shared_state.updateSpanContainer();
+
+  }
+
 }
 
-export default new Zoom({
-  min_zoom: config.CANVAS.MIN_ZOOM,
-  max_zoom: config.CANVAS.MAX_ZOOM,
-  zoom_container: config.HTML_ELEMENTS_IDS.place_viewer,
-})
+export default new CanvasZoom(shared_state.canvas, shared_state.span_container, config.CANVAS_ZOOM_LEVELS);
