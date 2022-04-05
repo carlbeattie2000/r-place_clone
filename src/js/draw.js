@@ -39,8 +39,6 @@ class Draw {
   drawRect(x, y, color) {
 
     const ctx = shared_state.ctx;
-
-    console.log(this.canvas);
     
     y = Math.floor(y);
     x = Math.floor(x);

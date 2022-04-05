@@ -114,3 +114,17 @@ canvas {
     box-shadow: 5px 10px 5px 5px #777;
   }
 }
+
+#image_download_button {
+  position: fixed;
+  top: 80%;
+  left: 20%;
+  padding: 1rem;
+  font-size: 1.5rem;
+  background-color: #fff;
+  border-radius: 2rem;
+  border: none;
+  box-shadow: 5px 10px 5px 1px #777;
+  cursor: pointer;
+
+}
